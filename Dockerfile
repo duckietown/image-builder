@@ -22,8 +22,8 @@ RUN apt-get update && \
 RUN git clone https://github.com/hypriot/image-builder-rpi /image-builder-rpi
 
 COPY --from=frozen-images /go/portainer.tar.gz .
-RUN mkdir /builder
-RUN cp -R /image-builder-rpi/builder/ /builder
+RUN mkdir /workspace
+RUN cp -R /image-builder-rpi/builder /workspace/
 
 RUN ["bash", "/image-builder-rpi/builder/build.sh"]
 
