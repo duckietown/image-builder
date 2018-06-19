@@ -4,23 +4,21 @@ RUN apt-get update && apt-get install -y jq ca-certificates wget tar lib32stdc++
 
 ENV ETCHER_URL="https://github.com/resin-io/etcher/releases/download/v1.4.4/etcher-cli-1.4.4-linux-x86.tar.gz"
 ENV ETCHER_DIR="/tmp/etcher-cli"
-ENV ETCHER_LOCAL=$(mktemp)
+ENV ETCHER_LOCAL="/tmp/etcher.download"
 
 ENV HYPRIOT_URL="https://github.com/hypriot/image-builder-rpi/releases/download/v1.9.0/hypriotos-rpi-v1.9.0.img.zip"
-ENV HYPRIOT_FILE=${HYPRIOT_URL##*/}
-ENV HYPRIOT_LOCAL="/tmp/$HYPRIOT_FILE"
+ENV HYPRIOT_LOCAL="/tmp/hypriotos-rpi-v1.9.0.img.zip"
 
 ENV IMAGE_DOWNLOADER_URL="https://raw.githubusercontent.com/moby/moby/master/contrib/download-frozen-image-v2.sh"
 ENV FLASHER_URL="https://raw.githubusercontent.com/rusi/duckietown.dev.land/master/assets/flash-hypriot.sh"
 
 RUN wget -cO ${ETCHER_LOCAL} ${ETCHER_URL}
-RUN mkdir $ETCHER_DIR
-RUN tar fvx ${ETCHER_LOCAL} -C ${ETCHER_DIR} --strip-components=1
+RUN mkdir $ETCHER_DIR && tar fvx ${ETCHER_LOCAL} -C ${ETCHER_DIR} --strip-components=1
 
 RUN wget -cO ${HYPRIOT_LOCAL} ${HYPRIOT_URL}
 
-RUN wget -cO / ${IMAGE_DOWNLOADER_URL}
-RUN wget -cO / ${FLASHER_URL}
+RUN wget -cO /download-frozen-image-v2.sh ${IMAGE_DOWNLOADER_URL} && chmod 777 /download-frozen-image-v2.sh
+RUN wget -cO /flash-hypriot.sh ${FLASHER_URL} && chmod 777 /flash-hypriot.sh
 
 RUN mkdir /portainer /duckietown-software
 RUN /download-frozen-image-v2.sh /portainer portainer/portainer:latest
