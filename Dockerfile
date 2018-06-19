@@ -1,6 +1,8 @@
 FROM golang:1.10.3
 
-RUN apt-get update && apt-get install -y jq ca-certificates wget tar lib32stdc++6 hdparm --no-install-recommends
+RUN apt-get update && apt-get install -y jq ca-certificates wget tar lib32stdc++6 vim \
+    # Required by hypriot/flash
+    curl aws pv unzip hdparm sudo file udev --no-install-recommends
 
 ENV ETCHER_URL="https://github.com/resin-io/etcher/releases/download/v1.4.4/etcher-cli-1.4.4-linux-x86.tar.gz"
 ENV ETCHER_DIR="/tmp/etcher-cli"
