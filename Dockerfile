@@ -51,4 +51,4 @@ RUN rm -rf /portainer/ /software/ ${ETCHER_LOCAL}
 # 
 # RUN ["bash", "/image-builder-rpi/builder/build.sh"]
 
-CMD ["/flash.sh", "${HYPRIOT_LOCAL}"]
+CMD ["/flash-hypriot.sh"]
